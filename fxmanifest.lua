@@ -1,6 +1,18 @@
-fx_version 'adamant'
-games { 'gta5' }
+fx_version 'cerulean'
+game 'gta5'
+
+author 'MiddleSkillz & TehSteel'
+description 'ms-peds'
+version '1.0.0'
+
+shared_scripts {
+    '@ox_lib/init.lua',
+    'config.lua',
+}
+
+client_scripts {
+    'client/main.lua',
+}
 
 
-client_script 'client.lua'
-client_script 'config.lua'
+lua54 'yes'
