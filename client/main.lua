@@ -1,34 +1,5 @@
 local spawnedPeds = {}
 
-CreateThread(function()
-	while true do
-		Wait(500)
-		for i = 1, #Config.PedList, 1 do
-			local pedData = Config.PedList[i]
-			if pedData then
-				local playerCoords = GetEntityCoords(cache.ped)
-				local distance = #(playerCoords - pedData[i].coords.xyz)
-	
-				if distance < Config.DistanceSpawn and not spawnedPeds[i] then
-					local spawnedPed = nearPed(pedData[i].model, pedData[i].coords, pedData[i].gender, pedData[i].animDict, pedData[i].animName, pedData[i].scenario)
-					spawnedPeds[i] = { spawnedPed = spawnedPed }
-				end
-	
-				if distance >= Config.DistanceSpawn and spawnedPeds[i] then
-					if Config.FadeIn then
-						for i = 255, 0, -51 do
-							Wait(50)
-							SetEntityAlpha(spawnedPeds[i].spawnedPed, i, false)
-						end
-					end
-					DeletePed(spawnedPeds[i].spawnedPed)
-					spawnedPeds[i] = nil
-				end
-			end
-		end
-	end
-end)
-
 local function nearPed(model, coords, gender, animDict, animName, scenario)
 	lib.requestModel(model)
 
@@ -72,3 +43,33 @@ local function nearPed(model, coords, gender, animDict, animName, scenario)
 
 	return spawnedPed
 end
+
+
+CreateThread(function()
+	while true do
+		Wait(500)
+		for i = 1, #Config.PedList, 1 do
+			local pedData = Config.PedList[i]
+			if pedData then
+				local playerCoords = GetEntityCoords(cache.ped)
+				local distance = #(playerCoords - pedData[i].coords.xyz)
+	
+				if distance < Config.DistanceSpawn and not spawnedPeds[i] then
+					local spawnedPed = nearPed(pedData[i].model, pedData[i].coords, pedData[i].gender, pedData[i].animDict, pedData[i].animName, pedData[i].scenario)
+					spawnedPeds[i] = { spawnedPed = spawnedPed }
+				end
+	
+				if distance >= Config.DistanceSpawn and spawnedPeds[i] then
+					if Config.FadeIn then
+						for i = 255, 0, -51 do
+							Wait(50)
+							SetEntityAlpha(spawnedPeds[i].spawnedPed, i, false)
+						end
+					end
+					DeletePed(spawnedPeds[i].spawnedPed)
+					spawnedPeds[i] = nil
+				end
+			end
+		end
+	end
+end)
